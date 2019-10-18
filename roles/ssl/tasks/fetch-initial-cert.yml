@@ -1,0 +1,22 @@
+---
+- name: Create Certbot init script
+  template:
+    src: certbot-init.sh.j2
+    dest: "{{ certbot_scripts_dir }}/certbot-init"
+    owner: "{{ ssl_management_user }}"
+    group: "{{ ssl_management_user }}"
+    mode: 'u=rwx,g=rx,o=r'
+
+- name: Run `certbot-init` to fetch new certs
+  # NOTE: Assumes `app` role runs as a dependency
+  # before this role, and that `ssl_certs_exist`
+  # was previously calculated as part of `app`
+  when: ssl_certs_exist == False
+  command: "{{ certbot_scripts_dir }}/certbot-init"
+  register: fetched_new_ssl_certs
+
+- name: Regenerate NGINX conf to configure with SSL
+  when: fetched_new_ssl_certs is succeeded
+  include_role:
+    name: app
+    tasks_from: create-nginx-conf

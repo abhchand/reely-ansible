@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# #############################################################################
+# This file is managed by Ansible. Any changes may be overwritten.
+# #############################################################################
+
+LOG="{{ letsencrypt_log_dir }}/init.log"
+
+# Log
+echo $(date)' | Getting new certs' >> $LOG
+
+# Run
+{{ certbot_scripts_dir }}/certbot-auto certonly \
+  -n \
+  --nginx \
+  --agree-tos \
+  --text \
+  -d {{ app_domain }} \
+  --email {{ letsencrypt_email }} \
+  {% if use_letsencrypt_staging == True %}--test-cert --dry-run{% endif %} >> $LOG 2>&1

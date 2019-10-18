@@ -1,0 +1,9 @@
+---
+
+app_name: reely
+app_domain: reely.co
+
+deploy_user: deploy
+git_user: git
+nginx_user: www-data
+ssl_management_user: root
