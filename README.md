@@ -1,4 +1,4 @@
-Ansible playbook for for [reely](https://gitlab.com/reely/reely)
+Ansible playbook for for [reely](https://github.com/abhchand/reely)
 
 # Quick-Start
 
